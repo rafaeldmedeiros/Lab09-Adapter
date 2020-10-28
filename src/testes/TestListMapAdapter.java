@@ -1,128 +1,117 @@
 package testes;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Map;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import adapter.ListMapAdapter;
 
-class TestListMapAdapter {
+public class TestListMapAdapter {
 	
 	Map<Object, String> mapAdapter;
 
-	@BeforeEach
-	void init(){
+	@Before
+	public void init(){
 		mapAdapter = new ListMapAdapter<String>();
 	}
 	
-	@AfterEach
-	void clear() {
-		mapAdapter.clear();
-	}
-	
 	@Test
-	void testClear() {
-		mapAdapter.put(001, "Ivan");
+	public void testClear() {
+		mapAdapter.put(1, "Rafael");
 		mapAdapter.clear();
 		assertTrue(mapAdapter.isEmpty());
 	}
 	
-	@Test
-	void testContainsKey() {
-		assertThrows(UnsupportedOperationException.class, ()->{
-			mapAdapter.containsKey(001);
-		});
+	@Test(expected = UnsupportedOperationException.class)
+	public void testContainsKey() {
+		mapAdapter.containsKey(1);
+		fail();
 	}
 
 	@Test
-	void testContainsValue() {
-		mapAdapter.put(001, "Ivan");
-		assertTrue(mapAdapter.containsValue("Ivan"));
+	public void testContainsValue() {
+		mapAdapter.put(100, "Otavio");
+		assertTrue(mapAdapter.containsValue("Otavio"));
+		assertFalse(mapAdapter.containsValue("Rafael"));
 	}
 	
 	@Test
-	void testNotContainsValue() {
-		mapAdapter.put(001, "Ivan");
-		assertFalse(mapAdapter.containsValue("Maria"));
-	}
-	
-	@Test
-	void isEquals() {
-		Map<Object, String> otherMap = new ListMapAdapter<String>();
-		otherMap.put(001, "Ivan");
-		mapAdapter.put(001, "Ivan");
+	public void testEquals() {
+		Map<Object, String> other = new ListMapAdapter<String>();
+		other.put(7, "Otavio");
+		mapAdapter.put(7, "Otavio");
 		
-		assertTrue(mapAdapter.equals(otherMap));
+		assertTrue(mapAdapter.equals(other));
 	}
 	
 	@Test
-	void isNotEquals() {
-		Map<Object, String> otherMap = new ListMapAdapter<String>();
-		otherMap.put(001, "Maria");
-		mapAdapter.put(001, "Ivan");
+	public void testNotEquals() {
+		Map<Object, String> other = new ListMapAdapter<String>();
+		other.put(1, "Rafael");
+		mapAdapter.put(9, "Otavio");
 		
-		assertFalse(mapAdapter.equals(otherMap));
+		assertFalse(mapAdapter.equals(other));
 	}
 	
 	@Test
-	void testGet() {
-		assertThrows(UnsupportedOperationException.class, ()->{
-			mapAdapter.get(001);
-		});
-	}
-	
-	@Test
-	void testIsEmpty() {
+	public void testIsEmpty() {
 		assertTrue(mapAdapter.isEmpty());
 	}
 	
 	@Test
-	void testIsNotEmpty() {
-		mapAdapter.put(001, "Ivan");
+	public void testIsNotEmpty() {
+		mapAdapter.put(9, "Otavio");
 		assertFalse(mapAdapter.isEmpty());
 	}
 	
 	@Test
-	void testPut() {
-		mapAdapter.put(001, "Ivan");
-		assertTrue(mapAdapter.containsValue("Ivan"));
+	public void testPut() {
+		mapAdapter.put(14, "Otavio");
+		assertTrue(mapAdapter.containsValue("Otavio"));
 	}
 
 	@Test
-	void testRemove() {
-		assertThrows(UnsupportedOperationException.class, ()->{
-			mapAdapter.remove(001);
-		});
+	public void testSizeVazio() {
+		assertEquals(0, mapAdapter.size());
 	}
 	
 	@Test
-	void testSize1() {
-		int expected = 0;
-		assertEquals(expected, mapAdapter.size());
+	public void testSize() {
+		mapAdapter.put(0, "José");
+		mapAdapter.put(0, "João");
+		mapAdapter.put(0, "Maria");
+		mapAdapter.put(0, "Rafael");
+		mapAdapter.put(0, "Otávio");
+		assertEquals(5, mapAdapter.size());
 	}
 	
 	@Test
-	void testSize2() {
-		int expected = 3;
-		mapAdapter.put(001, "Ivan");
-		mapAdapter.put(002, "Maria");
-		mapAdapter.put(003, "José");
-		assertEquals(expected, mapAdapter.size());
-	}
-	
-	@Test
-	void testValues() {
-		mapAdapter.put(001, "Ivan");
-		mapAdapter.put(002, "Maria");
-		mapAdapter.put(003, "José");
+	public void testValues() {
+		mapAdapter.put(1, "Otavio");
+		mapAdapter.put(1, "Maria");
+		mapAdapter.put(1, "José");
+		mapAdapter.put(1, "João");
+		mapAdapter.put(1, "Rafael");
 		
-		String[] expected = {"Ivan", "Maria", "José"};
+		
+		String[] expected = {"Otavio", "Maria", "José", "João", "Rafael"};
 		
 		assertEquals(Arrays.toString(expected), mapAdapter.values().toString());
+	}
+	
+	@Test(expected=UnsupportedOperationException.class)
+	public void testGet() {
+		mapAdapter.get(1);
+		fail();
+	}
+	
+	@Test(expected=UnsupportedOperationException.class)
+	public void testRemove() {
+		mapAdapter.remove(0);
+		fail();
 	}
 }

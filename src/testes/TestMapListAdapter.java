@@ -1,147 +1,130 @@
 package testes;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import adapter.MapListAdapter;
 
-class TestMapListAdapter {
+public class TestMapListAdapter {
 	
 	List<String> listAdapter;
 
-	@BeforeEach
-	void init() {
+	@Before
+	public void init() {
 		listAdapter = new MapListAdapter<String>();
-	}
-	
-	@AfterEach
-	void clear() {
-		listAdapter.clear();
 	}
 
 	@Test
-	void testAdd() {
-		listAdapter.add("Ivan");
-		assertTrue(listAdapter.contains("Ivan"));
+	public void testContains() {
+		listAdapter.add("Rafael");
+		assertTrue(listAdapter.contains("Rafael"));
+		assertFalse(listAdapter.contains("Otávio"));
 	}
 	
 	@Test
-	void testClear() {
-		listAdapter.add("Ivan");
+	public void testClear() {
+		listAdapter.add("Rafael");
 		listAdapter.clear();
 		assertTrue(listAdapter.isEmpty());
 	}
 	
 	@Test
-	void testContains() {
-		listAdapter.add("Ivan");
-		assertTrue(listAdapter.contains("Ivan"));
-	}
-	
-	@Test
-	void testNotContains() {
-		listAdapter.add("Ivan");
-		assertFalse(listAdapter.contains("Maria"));
-	}
-	
-	@Test
-	void isEquals() {
-		List<String> otherList = new MapListAdapter<String>();
-		otherList.add("Ivan");
-		listAdapter.add("Ivan");
+	public void testEquals() {
+		List<String> other = new MapListAdapter<String>();
+		other.add("Rafael");
+		listAdapter.add("Rafael");
 		
-		assertTrue(listAdapter.equals(otherList));
+		assertTrue(listAdapter.equals(other));
 	}
 	
 	@Test
-	void isNotEquals() {
-		List<String> otherList = new MapListAdapter<String>();
-		otherList.add("Maria");
-		listAdapter.add("Ivan");
+	public void testNotEquals() {
+		List<String> other = new MapListAdapter<String>();
+		other.add("Otávio");
+		listAdapter.add("Rafael");
 		
-		assertFalse(listAdapter.equals(otherList));
+		assertFalse(listAdapter.equals(other));
 	}
 	
 	@Test
-	void testGet() {
-		assertThrows(UnsupportedOperationException.class, ()->{
-			listAdapter.get(0);
-		});
-	}
-	
-	@Test
-	void testIsEmpty() {
+	public void testIsEmpty() {
 		assertTrue(listAdapter.isEmpty());
 	}
 	
 	@Test
-	void testIsNotEmpty() {
-		listAdapter.add("Ivan");
+	public void testIsNotEmpty() {
+		listAdapter.add("Rafael");
 		assertFalse(listAdapter.isEmpty());
 	}
 	
 	@Test
-	void testIterator() {
-		listAdapter.add("Ivan");
+	public void testIterator() {
+		listAdapter.add("Rafael");
 		listAdapter.add("Maria");
 		listAdapter.add("José");
+		listAdapter.add("João");
+		listAdapter.add("Otávio");
 		
-		String[] nomes = {"Ivan", "Maria", "José"};
+		String[] nomes = {"Rafael", "Maria", "José", "João", "Otávio"};
 		
 		Iterator<String> iterator = listAdapter.iterator();
 		
-		int cont = 0;
+		int count = 0;
 		while(iterator.hasNext()) {
-			assertEquals(iterator.next(), nomes[cont]);
-			cont++;
+			assertEquals(iterator.next(), nomes[count]);
+			count++;
 		}
 	}
 	
 	@Test
-	void testRemove() {
-		listAdapter.add("Ivan");
-		
-		assertTrue(listAdapter.remove("Ivan"));
+	public void testRemove() {
+		listAdapter.add("Rafael");
+		assertTrue(listAdapter.remove("Rafael"));
 	}
 	
 	@Test
-	void testNotRemove() {
-		listAdapter.add("Ivan");
-		
-		assertFalse(listAdapter.remove("Maria"));
+	public void testNotRemove() {
+		listAdapter.add("Rafael");
+		assertFalse(listAdapter.remove("Otávio"));
 	}
 	
 	@Test
-	void testSize1() {
-		int expected = 0;
-		assertEquals(expected, listAdapter.size());
+	public void testSizeVazio() {
+		assertEquals(0, listAdapter.size());
 	}
 	
 	@Test
-	void testSize2() {
-		int expected = 3;
-		listAdapter.add("Ivan");
+	public void testSize() {
+		listAdapter.add("Rafael");
 		listAdapter.add("Maria");
 		listAdapter.add("José");
-		assertEquals(expected, listAdapter.size());
+		listAdapter.add("João");
+		listAdapter.add("Otávio");
+		assertEquals(5, listAdapter.size());
 	}
 	
 	@Test
-	void testToArray() {
-		listAdapter.add("Ivan");
+	public void testToArray() {
+		listAdapter.add("Rafael");
 		listAdapter.add("Maria");
 		listAdapter.add("José");
+		listAdapter.add("João");
+		listAdapter.add("Otávio");
 		
-		String[] nomes = {"Ivan", "Maria", "José"};
+		String[] nomes = {"Rafael", "Maria", "José", "João", "Otávio"};
 		
 		assertTrue(Arrays.equals(listAdapter.toArray(), nomes));
+	}
+
+	@Test(expected=UnsupportedOperationException.class)
+	public void testGet() {
+		listAdapter.get(9999);
+		fail();
 	}
 }
